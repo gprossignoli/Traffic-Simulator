@@ -14,30 +14,30 @@ public class CruceCongestionado extends CruceGenerico<CarreteraEntranteConInterv
 
 	 @Override
 	 protected void actualizaSemaforos() {
-		 CarreteraEntranteConIntervalo ri = null;
+		 CarreteraEntranteConIntervalo ri;
+         final boolean green = true;
+         final boolean red = false;
 		 int posicion = 0;
+
 		 if(this.indiceSemaforoVerde == -1) {
-			posicion = this.getCarreteraConMasVehiculos(null);
 			ri = this.carreterasEntrantes.get(0);
-			ri.ponSemaforo(true);
+			ri.ponSemaforo(green);
 			ri.setIntervaloDeTiempo(Math.max(ri.getNvehiculosEnCola(), 1));
 			++this.indiceSemaforoVerde;
 		 }
+
 		 else {
 			 ri = this.carreterasEntrantes.get(this.indiceSemaforoVerde);
 			 if(ri.tiempoConsumido()) {
-				 ri.ponSemaforo(false);
+				 ri.ponSemaforo(red);
 				 ri.setUnidadesDeTiempoUsadas();
-				 //ri = new CarreteraEntranteConIntervalo(ri.getRoad(),0);
 				 ri.setIntervaloDeTiempo(0);
-				 
 				 posicion = this.getCarreteraConMasVehiculos(ri.getRoad().getId());
 				 CarreteraEntranteConIntervalo rj = this.carreterasEntrantes.get(posicion);
 				 indiceSemaforoVerde = posicion;
-				 rj.ponSemaforo(true);
-				 int tempo = Math.max(rj.getNvehiculosEnCola()/2, 1);
-			//	 rj = new CarreteraEntranteConIntervalo(rj.getRoad(),tempo);
-				 rj.setIntervaloDeTiempo(tempo);
+				 rj.ponSemaforo(green);
+				 int tiempo = Math.max(rj.getNvehiculosEnCola()/2, 1);
+				 rj.setIntervaloDeTiempo(tiempo);
 			 }
 		 }
 	// - Si no hay carretera con semáforo en verde (indiceSemaforoVerde == -1) entonces se
@@ -57,7 +57,8 @@ public class CruceCongestionado extends CruceGenerico<CarreteraEntranteConInterv
 
 	@Override
 	protected CarreteraEntranteConIntervalo creaCarreteraEntrante(Carretera carretera) {
-		return new CarreteraEntranteConIntervalo(carretera, 0);
+	     final int intervalTiempo = 0;
+		return new CarreteraEntranteConIntervalo(carretera, intervalTiempo);
 	}
 
 	@Override
@@ -69,14 +70,22 @@ public class CruceCongestionado extends CruceGenerico<CarreteraEntranteConInterv
 	protected int getCarreteraConMasVehiculos(String keynoValida) {
 		int pos = 0;
 		int mayor = -1;
-		CarreteraEntranteConIntervalo c = null;
+		CarreteraEntranteConIntervalo c;
 		for(int i = 0; i < this.carreterasEntrantes.size();++i) {
 			c = this.carreterasEntrantes.get(i);
-			if(mayor < c.getNvehiculosEnCola() && !c.getRoad().getId().equals(keynoValida)){
+			if(mayor < c.getNvehiculosEnCola() && claveValida(keynoValida,c)){
 				pos = i;
+				mayor = c.getNvehiculosEnCola();
 			}
 		}
 		return pos;
 	}
-	
+
+	private boolean claveValida(String keynoValida,CarreteraEntranteConIntervalo c){
+	    boolean valido = true;
+        if(c.getRoad().getId().equals(keynoValida))
+            valido = false;
+
+        return valido;
+    }
 }

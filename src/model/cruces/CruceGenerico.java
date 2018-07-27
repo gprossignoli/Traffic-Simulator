@@ -58,27 +58,31 @@ abstract public class CruceGenerico<T extends CarreteraEntrante> extends ObjetoS
 		 catch (ErrorDeSimulacion e) {throw e;}
 	 }
 	 
-	abstract protected void actualizaSemaforos();
+	 protected void actualizaSemaforos(){
+         final boolean green = true;
+         ++indiceSemaforoVerde;
+         indiceSemaforoVerde = indiceSemaforoVerde % carreterasEntrantes.size();
+         carreterasEntrantes.get(indiceSemaforoVerde).ponSemaforo(green);
+	 }
 	 
 	 @Override
 	 protected void completaDetallesSeccion(IniSection is) {
 		 if(carreterasEntrantes.size() < 1)
 			 is.setValue("queues","\n");
+
 		 else {
 			 String cola = "";
-		 for(int i = 0; i < carreterasEntrantes.size(); i++) {
-			 cola += carreterasEntrantes.get(i).toString();
-			 if(i < carreterasEntrantes.size() - 1)
-				 cola += ",";
-		 }
-		 
-		 is.setValue("queues", cola);
-			 //is.setValue("queues", carreterasEntrantes.get(i).toString());
-	  // genera la secci�n queues = (r2,green,[]),...
+		     for(int i = 0; i < carreterasEntrantes.size() - 1; ++i) {
+			     cola += carreterasEntrantes.get(i).toString() + ",";
+		     }
+             cola += carreterasEntrantes.get(carreterasEntrantes.size() - 1).toString();
+
+		     is.setValue("queues", cola);
+	        // genera la seccion queues = (r2,green,[]),...
 		 }
 	 }
 	 
-	 public String  getNombreSeccion(){
+	 public String  getNombreSeccion() {
 		 return "junction_report";
 	 }
 	 
@@ -89,14 +93,13 @@ abstract public class CruceGenerico<T extends CarreteraEntrante> extends ObjetoS
 	 }
 	 
 	 public List<String> getCarreterasEntrantesRojo(){
-
-		 List<String> reportes = new ArrayList<String>();
+		 List<String> reports = new ArrayList<>();
 		 for(int i = 0; i < this.carreterasEntrantes.size(); ++i) {
 			 if(i != this.indiceSemaforoVerde) {
-				 reportes.add(this.carreterasEntrantes.get(i).toString());
+				 reports.add(this.carreterasEntrantes.get(i).toString());
 			 }
 		 }
-		 return reportes;
+		 return reports;
 	 }
 	 
 }

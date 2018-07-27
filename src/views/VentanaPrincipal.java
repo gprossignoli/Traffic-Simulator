@@ -377,7 +377,7 @@ public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafi
 					return false;
 				}
 			 }
-			 this.toolbar.desactivaBotones(true);
+			 this.stopSimulation();
 			 return true;
 			}
 			
