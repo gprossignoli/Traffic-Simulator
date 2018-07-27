@@ -12,18 +12,17 @@ public class Autopista extends Carretera{
 	}
 	
 	protected int calculaVelocidadBase(){
-		int max;
-		 if(vehiculos.size() > 1)
-			 max = vehiculos.size();
-		 else 
-			 max = 1;
-		 int div = (velocidadMaxima * numCarriles / max) + 1;
-		 int velocidadBase;
-		 if(velocidadMaxima < div)
+		int max = 1;
+		if(vehiculos.size() > 1)
+			max = vehiculos.size();
+
+		final int div = (velocidadMaxima * numCarriles / max) + 1;
+		int velocidadBase = div;
+
+		if(velocidadMaxima < div)
 			 velocidadBase = velocidadMaxima;
-		 else
-			 velocidadBase = div;
-		 return velocidadBase;
+
+		return velocidadBase;
 	}
 	
 	protected int calculaFactorReduccion(int obstaculos){
@@ -31,11 +30,10 @@ public class Autopista extends Carretera{
 		else return 2;
 	}
 
-	protected void completaDetallesSeccion(IniSection is) {
-		super.completaDetallesSeccion(is);
-		is.setValue("type", "lanes");
-		// crea �vehicles = (v1,10),(v2,10) �
+	protected void completaDetallesSeccion(IniSection iniSect) {
+		super.completaDetallesSeccion(iniSect);
+		iniSect.setValue("type", "lanes");
+		// crea vehicles = (v1,10),(v2,10)
 	}
 
-	
 }

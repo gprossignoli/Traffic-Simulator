@@ -51,7 +51,7 @@ public class Controlador {
 		 // recorremos todas los elementos de iniSections para generar el evento
 		 // correspondiente
 		 for (IniSection sec : ini.getSections()) {
-		 // parseamos la secci�n para ver a que evento corresponde
+		 // parseamos la seccion para ver a que evento corresponde
 			 Evento e = ParserEventos.parseaEvento(sec);
 			 if (e != null) this.simulador.insertaEvento(e);
 			 else

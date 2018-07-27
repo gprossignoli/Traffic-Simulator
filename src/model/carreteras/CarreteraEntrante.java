@@ -14,11 +14,10 @@ public class CarreteraEntrante {
 	 
 	 public CarreteraEntrante(Carretera carretera) {
 		 this.carretera = carretera;
-		 semaforo = false;
-		 colaVehiculos = new ArrayList<Vehiculo>();
-	 // inicia los atributos.
-	 // el sem�foro a rojo
+		 this.semaforo = false;
+		 this.colaVehiculos = new ArrayList<Vehiculo>();
 	 }
+
 	 public void ponSemaforo(boolean color) {
 		 if(color)
 			 semaforo = true;
@@ -29,51 +28,56 @@ public class CarreteraEntrante {
 	 public void avanzaPrimerVehiculo() throws ErrorDeSimulacion {
 		try {
 			if(colaVehiculos.size()>0) {
-				Vehiculo v = colaVehiculos.get(0);
+				final int firstVehicle = 0;
+				Vehiculo v = colaVehiculos.get(firstVehicle);
 				v.moverASiguienteCarretera();
 				v.salirCruce();
-				colaVehiculos.remove(0);
+				colaVehiculos.remove(firstVehicle);
 			}
 		}
 		catch(ErrorDeSimulacion e) {throw e;}
-	 // coge el primer vehiculo de la cola, lo elimina,
-	 // y le manda que se mueva a su siguiente carretera.
 	 }
+
 	 @Override
 	 public String toString() {
 		 
-		 String colorSem;
-		 if(semaforo)
-			 colorSem = "green";
-		 else 
+		 String colorSem = "green";
+
+		 if(!semaforo)
 			 colorSem = "red";
-		 /*String aux = colaVehiculos.toString();
-		 if(aux.length() > 2)
-			 aux = "[" + aux.substring(2, aux.length()-3) + "]";*/
-		 String aux = "[";
-		 Vehiculo tmp;
-		 if(colaVehiculos.size()>0) {
-		 for(int i = 0; i < colaVehiculos.size()-1;++i) {
-			 tmp = colaVehiculos.get(i);
-			 aux += tmp.getId() + ",";
-		 }
-		 tmp = colaVehiculos.get(colaVehiculos.size()-1);
-		 aux += tmp.getId();
-		 }
-		 aux += "]";
-		 return "(" + carretera.getId() + "," + colorSem + "," + aux + ")";
-		 
+
+		 String vehicleID = makeVehiclesIDList();
+		 return "(" + carretera.getId() + "," + colorSem + "," + vehicleID + ")";
 	 }
-	
+
+	 protected String makeVehiclesIDList(){
+		 String vehicleID = "[";
+
+		 if(colaVehiculos.size()>0) {
+			 Vehiculo vInQueue;
+			 for(int i = 0; i < colaVehiculos.size()-1;++i) {
+				 vInQueue = colaVehiculos.get(i);
+				 vehicleID += vInQueue.getId() + ",";
+			 }
+			 vInQueue = colaVehiculos.get(colaVehiculos.size()-1);
+			 vehicleID += vInQueue.getId();
+		 }
+
+		 vehicleID += "]";
+		 return vehicleID;
+	 }
 	 public void addNewVehicle(Vehiculo vehiculo) {
 		 colaVehiculos.add(vehiculo);
 	 }
+
 	 public Carretera getRoad() {
 		 return carretera;
 	 }
+
 	 public int getNvehiculosEnCola() {
 		 return colaVehiculos.size();
 	 }
+
 	 public boolean getSemaforo() {
 		 return semaforo;
 	 }
