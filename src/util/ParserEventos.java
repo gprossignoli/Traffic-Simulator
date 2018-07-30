@@ -15,7 +15,8 @@ import control.events.Evento;
 import ini.IniSection;
 
 public class ParserEventos {
-	 private static ConstructorEventos[] constructorEventos = {
+
+    private static ConstructorEventos[] constructorEventos = {
 	 new ConstructorEventoNuevoCruce(),
 	 new ConstructorEventoNuevoCruceCongestionado(),
 	 new ConstructorEventoNuevoCruceCircular(),
@@ -27,17 +28,18 @@ public class ParserEventos {
 	 new ConstructorEventoNuevaBicicleta(),
 	 new ConstructorEventoAveria()
 	 };
-	// bucle de prueba y error
+
 	 public static Evento parseaEvento(IniSection sec) {
 		 int i = 0;
 		 boolean seguir = true;
 		 Evento e = null;
+
 		 while (i < ParserEventos.constructorEventos.length && seguir ) {
-			 // ConstructorEventos contiene el m�todo parse(sec)
 			 e = ParserEventos.constructorEventos[i].parser(sec);
 			 if (e!=null) seguir = false;
-			 else i++;
+			 else ++i;
 		 }
+
 		 return e;
 	 }
 	 

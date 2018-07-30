@@ -1,6 +1,6 @@
 package model;
 
 public interface Observador<T> {
-	public void addObservador(T o);
-	 public void removeObservador(T o);
+	 void addObservador(T o);
+	 void removeObservador(T o);
 }

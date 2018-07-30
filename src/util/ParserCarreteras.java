@@ -9,7 +9,8 @@ import model.cruces.CruceGenerico;
 
 public class ParserCarreteras {
 	
-	public static List<CruceGenerico<?>> parseaListaCruces(String[] itinerario, MapaCarreteras mapa) throws ErrorDeSimulacion {
+	public static List<CruceGenerico<?>> parseaListaCruces(String[] itinerario,
+                                                           MapaCarreteras mapa) throws ErrorDeSimulacion {
 		
 		List<CruceGenerico<?>> lista = new ArrayList<CruceGenerico<?>>();	
 	
